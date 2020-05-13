@@ -19,17 +19,11 @@ client.on('message', message => {
   const target_lang = message.channel.topic.trim().match(/deepl-translate\((.+)\)/)[1];
   if (!target_lang) return;
 
-  axios.post('https://api.deepl.com/v2/translate?' +
-    'auth_key=' + auth.auth_key +'&' + 
-    'text=' + encodeURIComponent(message.content) + '&' +
-    'target_lang=' + target_lang)
+  post(message.content, target_lang)
   .then(response => {
     if (response.data.translations.length === 1 &&
         response.data.translations[0].detected_source_language === target_lang) {
-      axios.post('https://api.deepl.com/v2/translate?' +
-        'auth_key=' + auth.auth_key +'&' + 
-        'text=' + encodeURIComponent(message.content) + '&' +
-        'target_lang=' + DEFAULT_LANG)
+      post(message.content, DEFAULT_LANG)
       .then(retry => {
         send(message, retry.data.translations);
       })
@@ -39,16 +33,19 @@ client.on('message', message => {
   })
 });
 
+const post = (message, lang) => {
+  return axios.post('https://api.deepl.com/v2/translate?' +
+    'auth_key=' + auth.auth_key +'&' + 
+    'text=' + encodeURIComponent(message) + '&' +
+    'target_lang=' + lang)
+}
+
 const send = (message, translations) => {
   const embed = new MessageEmbed()
     .setAuthor(message.author.username, message.author.displayAvatarURL())
     .setColor(0xff0000)
-    // Set the main content of the embed
-//    .setDescription(translations[0].detected_source_language + ': ' + translations[0].text + ' \n new line' );
     .setDescription(translations.map(t => (translations[0].text)).join('\n'));
-    // Send the embed to the same channel as the message
   message.channel.send(embed);
 }
 
-// login to Discord with your app's token
 client.login(auth.token);

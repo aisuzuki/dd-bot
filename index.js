@@ -88,14 +88,16 @@ const send = (message, translations) => {
 }
 
 if (process.env.TOKEN && process.env.AUTH_KEY) {
+  console.log('auth: using environment variables.');
   token = process.env.TOKEN;
   auth_key = process.env.AUTH_KEY;
 } else if (fs.existsSync(AUTH_FILE)) {
+  console.log('auth: using auth file.');
   var auth = require(AUTH_FILE);
   token = auth.token;
   auth_key = auth.auth_key;
 } else {
-  console.log('Error.');
+  console.log('auth: not found.');
 }
 
 client.login(token);

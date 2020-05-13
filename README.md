@@ -1,6 +1,6 @@
 # DeepL - Discord auto chat translator
 
-##Usage
+## Usage
 
 Deploy this app anywhere. Create a JSON file that contains access tokens: 
 

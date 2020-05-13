@@ -6,6 +6,7 @@
   "scripts": {
     "test": "test"
   },
+  "engines": { "node": "12.x" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aisuzuki/dd-bot.git"

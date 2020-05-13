@@ -21,14 +21,39 @@ client.on('message', message => {
 
   post(message.content, target_lang)
   .then(response => {
+
+    // if source text's language was same as target language, text was translated into default language.
     if (response.data.translations.length === 1 &&
         response.data.translations[0].detected_source_language === target_lang) {
       post(message.content, DEFAULT_LANG)
       .then(retry => {
-        send(message, retry.data.translations);
+        send(message, [ { lang: DEFAULT_LANG, translations: retry.data.translations } ]);
       })
+    
+    // if souce text's language was neither target language nor default language
+    // add default language translation.
+    } else if (
+      response.data.translations[0].detected_source_language !== target_lang
+      &&
+      response.data.translations[0].detected_source_language !== DEFAULT_LANG) {
+      post(message.content, DEFAULT_LANG)
+      .then(retry => {
+        send(message,
+          [
+            {
+              lang: target_lang,
+              translations: response.data.translations
+            },
+            {
+              lang: DEFAULT_LANG,
+              translations: retry.data.translations
+            }
+          ]);
+      })
+    
+    // text was translated into target language.
     } else {
-      send(message, response.data.translations);
+      send(message, [ { lang: target_lang, translations: response.data.translations } ]);
     }
   })
 });
@@ -44,7 +69,17 @@ const send = (message, translations) => {
   const embed = new MessageEmbed()
     .setAuthor(message.author.username, message.author.displayAvatarURL())
     .setColor(0xff0000)
-    .setDescription(translations.map(t => (translations[0].text)).join('\n'));
+    .setDescription(
+      translations.map(t => {
+        let text = t.lang + ': ' + t.translations[0].text;
+        if (t.translations.length > 1) {
+          text += ' (';
+          text += t.translations.slice(1).map(others => ( others.detected_source_language + ': ' + others.text )).join(', ');
+          text += ')';
+        }
+        return text;
+      })
+      .join('\n'));
   message.channel.send(embed);
 }
 

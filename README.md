@@ -1,5 +1,7 @@
 # DeepL - Discord auto chat translator
 
+Game players must not be separated because of language barriers.
+
 ## Usage
 
 Deploy this app anywhere. Create a JSON file that contains access tokens: 

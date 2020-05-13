@@ -1,9 +1,13 @@
 const { Client, MessageEmbed } = require('discord.js');
-const auth = require('./auth.json');
 const axios = require('axios');
+const fs = require('fs');
 
 const APPNAME = 'translator';
 const DEFAULT_LANG = 'EN';
+const AUTH_FILE = './auth.json';
+
+let auth_key = '';    // DeepL authorization key
+let token = '';       // Discord bot token
 
 const client = new Client();
 
@@ -60,7 +64,7 @@ client.on('message', message => {
 
 const post = (message, lang) => {
   return axios.post('https://api.deepl.com/v2/translate?' +
-    'auth_key=' + auth.auth_key +'&' + 
+    'auth_key=' + auth_key +'&' + 
     'text=' + encodeURIComponent(message) + '&' +
     'target_lang=' + lang)
 }
@@ -83,4 +87,15 @@ const send = (message, translations) => {
   message.channel.send(embed);
 }
 
-client.login(auth.token);
+if (process.env.TOKEN && process.env.AUTH_KEY) {
+  token = process.env.TOKEN;
+  auth_key = process.env.AUTH_KEY;
+} else if (fs.existsSync(AUTH_FILE)) {
+  var auth = require(AUTH_FILE);
+  token = auth.token;
+  auth_key = auth.auth_key;
+} else {
+  console.log('Error.');
+}
+
+client.login(token);

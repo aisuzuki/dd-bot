@@ -11,7 +11,7 @@ Deploy this app anywhere. Create a JSON file that contains access tokens:
 }
 ```
 
-Install your bot into your server, and launch the app.
+Install your bot into your discord server, and launch the app.
 
 ## Target language configuration
 

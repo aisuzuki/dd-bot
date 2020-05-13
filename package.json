@@ -1,0 +1,24 @@
+{
+  "name": "dd-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aisuzuki/dd-bot.git"
+  },
+  "author": "Ai Suzuki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aisuzuki/dd-bot/issues"
+  },
+  "homepage": "https://github.com/aisuzuki/dd-bot#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "discord.js": "^12.2.0",
+    "eslint": "^7.0.0"
+  }
+}

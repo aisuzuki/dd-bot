@@ -71,7 +71,7 @@ const send = (message, translations) => {
     .setColor(0xff0000)
     .setDescription(
       translations.map(t => {
-        let text = '`' + t.lang + '：`' + t.translations[0].text;
+        let text = '`' + t.lang + ':` ' + t.translations[0].text;
         if (t.translations.length > 1) {
           text += ' (';
           text += t.translations.slice(1).map(others => ( others.detected_source_language + ': ' + others.text )).join(', ');

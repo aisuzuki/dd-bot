@@ -2,7 +2,6 @@ const { Client, MessageEmbed } = require('discord.js');
 const axios = require('axios');
 const fs = require('fs');
 
-const APPNAME = 'translator';
 const DEFAULT_LANG = 'EN';
 const AUTH_FILE = './auth.json';
 
@@ -17,7 +16,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
 
-  if (message.author.username===APPNAME) return;
+  if (message.author.bot) return;
   if (!message.channel.topic) return;
   const translationConfig = message.channel.topic.trim().match(/deepl-translate\((.+)\)/);
   if (!translationConfig) return;
@@ -73,7 +72,7 @@ const post = (message, lang) => {
 
 const send = (message, translations) => {
   const embed = new MessageEmbed()
-    .setAuthor(message.author.username, message.author.displayAvatarURL())
+    .setAuthor(message.author.username, message.author.avatarURL())
     .setColor(0xff0000)
     .setDescription(
       translations.map(t => {

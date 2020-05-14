@@ -17,10 +17,12 @@ client.once('ready', () => {
 
 client.on('message', message => {
 
-  if (!message.channel.topic) return;
   if (message.author.username===APPNAME) return;
+  if (!message.channel.topic) return;
+  const translationConfig = message.channel.topic.trim().match(/deepl-translate\((.+)\)/);
+  if (!translationConfig) return;
 
-  const target_lang = message.channel.topic.trim().match(/deepl-translate\((.+)\)/)[1];
+  const target_lang = translationConfig[1];
   if (!target_lang) return;
 
   post(message.content, target_lang)
@@ -78,7 +80,9 @@ const send = (message, translations) => {
         let text = '`' + t.lang + ':` ' + t.translations[0].text;
         if (t.translations.length > 1) {
           text += ' (';
-          text += t.translations.slice(1).map(others => ( others.detected_source_language + ': ' + others.text )).join(', ');
+          text += t.translations.slice(1).map(others =>
+            (others.detected_source_language + ': ' + others.text ))
+            .join(', ');
           text += ')';
         }
         return text;
@@ -98,6 +102,11 @@ if (process.env.TOKEN && process.env.AUTH_KEY) {
   auth_key = auth.auth_key;
 } else {
   console.log('auth: not found.');
+  process.exit(1);
+}
+
+if (process.env.KEEP_ALIVE_ENDPOINT) {
+  require('./heartbeat');
 }
 
 client.login(token);

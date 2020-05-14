@@ -7,7 +7,9 @@
     "start": "node index.js",
     "test": "test"
   },
-  "engines": { "node": "12.x" },
+  "engines": {
+    "node": "12.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aisuzuki/dd-bot.git"
@@ -21,6 +23,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "discord.js": "^12.2.0",
-    "eslint": "^7.0.0"
+    "eslint": "^7.0.0",
+    "express": "^4.17.1"
   }
 }

@@ -4,7 +4,21 @@ Game players must not be separated because of language barriers.
 
 ## Usage
 
-Deploy this app anywhere. Create a JSON file that contains access tokens: 
+Deploy this app anywhere. 
+
+
+### Set secret data
+There's two way to set secret data:
+
+1. Set environment variables.
+```
+export TOKEN='your token of discord bot'
+export AUTH_KEY='authorization key of your DeepL API'
+```
+
+2. Set variables in JSON file.
+
+Create a JSON file that contains access tokens: 
 
 ```
 {
